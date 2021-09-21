@@ -10,8 +10,6 @@ export default function Home() {
   const [counter, setCounter] = useState(null);
 
   useEffect(() => {
-    console.log('osdf')
-
     const setup = async () => {
       const web3 = new Web3('http://localhost:7545/');
       const accounts = await web3.eth.getAccounts();
@@ -21,8 +19,6 @@ export default function Home() {
       setContract(new web3.eth.Contract(artifact.abi, contractAddress, {
         from: accounts[0],
       }));
-
-      console.log('accoounts', accounts)
     }
 
     setup();
