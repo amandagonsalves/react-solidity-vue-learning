@@ -7,7 +7,7 @@ import artifact from '../../smart-contracts/build/contracts/Counter.json';
 
 export default function Home() {
   const [contract, setContract] = useState(null);
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(null);
 
   useEffect(() => {
     console.log('osdf')
