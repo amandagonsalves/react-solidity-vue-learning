@@ -28,12 +28,9 @@ export default function Home() {
     setup();
   }, []);
 
-  useEffect(() => {
-    console.log(contract)
-  }, [contract])
-
   const increment = async () => {
-    contract.methods.increment().send();
+    await contract.methods.increment().send();
+
     setCounter(await contract.methods.getCount().call())
   }
 
