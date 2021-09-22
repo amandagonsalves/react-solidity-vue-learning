@@ -4,12 +4,11 @@ pragma solidity >=0.4.22 <0.9.0;
 contract Escrow {
   address payable public buyer;
   address payable public seller;
-  address public arbiter;
   mapping(address => uint256) TotalAmount;
 
   enum State {
-    awate_payment,
-    awate_delivery,
+    awaiting_payment,
+    awaiting_confirmation,
     complete
   }
 
@@ -21,7 +20,7 @@ contract Escrow {
   }
 
   modifier onlyBuyer() {
-    require(msg.sender == buyer || msg.sender == arbiter);
+    require(msg.sender == buyer);
     _;
   }
 
@@ -33,20 +32,19 @@ contract Escrow {
   constructor(address payable _buyer, address payable _seller) public {
     buyer = _buyer;
     seller = _seller;
-    arbiter = msg.sender;
   }
 
-  function confirmPayment() public onlyBuyer instate(State.awate_delivery) {
+  function deposit() public onlyBuyer instate(State.awaiting_payment) {
     seller.transfer(address(this).balance);
-    state = State.awate_delivery;
+    state = State.awaiting_confirmation;
   }
 
-  function confirm_Delivery() public onlyBuyer instate(State.awate_delivery) {
+  function confirmTransfer() public onlyBuyer instate(State.awaiting_confirmation) {
     seller.transfer(address(this).balance);
     state = State.complete;
   }
 
-  function ReturnPayment() public onlySeller instate(State.awate_delivery) {
+  function returnPayment() public onlySeller instate(State.awaiting_confirmation) {
     buyer.transfer(address(this).balance);
   }
 }
